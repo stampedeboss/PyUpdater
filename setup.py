@@ -61,7 +61,6 @@ setup(
     include_package_data=True,
     tests_require=['pytest'],
     cmdclass=versioneer.get_cmdclass(),
-    install_requires=,
     packages=find_packages(),
     entry_points="""
     [console_scripts]
