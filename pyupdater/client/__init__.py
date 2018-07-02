@@ -42,9 +42,11 @@ import six
 
 from pyupdater import settings, __version__
 from pyupdater.client.downloader import FileDownloader as _FD
-from pyupdater.client.updates import AppUpdate, _get_highest_version, LibUpdate
+from pyupdater.client.updates import AppUpdate, LibUpdate
 from pyupdater.utils.config import Config as _Config
 from pyupdater.utils.exceptions import ClientError
+
+from jetCore.version import _get_highest_version
 
 
 warnings.simplefilter('always', DeprecationWarning)
@@ -240,7 +242,7 @@ class Client(object):
         return self._update_check(name, version, channel, strict)
 
     def _update_check(self, name, version, channel, strict):
-        valid_channels = ['alpha', 'beta', 'stable']
+        valid_channels = ['daily', 'alpha', 'beta', 'stable']
         if channel not in valid_channels:
             log.debug('Invalid channel. May need to check spelling')
             channel = 'stable'

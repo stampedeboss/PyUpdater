@@ -43,81 +43,10 @@ from pyupdater.client.patcher import Patcher
 from pyupdater.package_handler.package import remove_previous_versions
 from pyupdater.utils.exceptions import ClientError
 
+from jetCore.version import _get_highest_version
+
 
 log = logging.getLogger(__name__)
-
-
-def _get_highest_version(name, plat, channel, easy_data, strict):
-    # Parses version file and returns the highest version number.
-    #
-    #   Args:
-    #
-    #      name (str): name of file to search for updates
-    #
-    #      plat (str): the platform we are requesting for
-    #
-    #      channel (str): the release channel
-    #
-    #      easy_data (dict): data file to search
-    #
-    #      strict (bool): specify whether or not to take the channel
-    #                     into consideration
-    #
-    #   Returns:
-    #
-    #      (str) Highest version number
-
-    # We grab all keys and return the version corresponding to the
-    # channel passed to this function
-    version_key_alpha = '{}*{}*{}*{}'.format('latest', name, 'alpha', plat)
-    version_key_beta = '{}*{}*{}*{}'.format('latest', name, 'beta', plat)
-    version_key_stable = '{}*{}*{}*{}'.format('latest', name, 'stable', plat)
-    version = None
-
-    version_options = []
-
-    alpha_available = False
-    alpha_str = easy_data.get(version_key_alpha)
-    if alpha_str is not None:
-        log.debug('Alpha str: %s', alpha_str)
-        alpha = Version(alpha_str)
-        version_options.append(alpha)
-        alpha_available = True
-
-    beta_available = False
-    beta_str = easy_data.get(version_key_beta)
-    if beta_str is not None:
-        log.debug('Beta str: %s', beta_str)
-        beta = Version(beta_str)
-        version_options.append(beta)
-        beta_available = True
-
-    stable_str = easy_data.get(version_key_stable)
-    stable_available = False
-    if stable_str is not None:
-        log.debug('Stable str: %s', stable_str)
-        stable = Version(stable_str)
-        version_options.append(stable)
-        stable_available = True
-
-    if strict is False:
-        return str(max(version_options))
-
-    if alpha_available is True and channel == 'alpha':
-        version = alpha
-
-    if beta_available is True and channel == 'beta':
-        version = beta
-
-    if stable_available is True and channel == 'stable':
-        version = stable
-
-    if version is not None:
-        log.debug('Highest version: %s', version)
-        return str(version)
-    else:
-        log.info('No updates for "%s" on %s exists', name, plat)
-        return version
 
 
 def gen_user_friendly_version(internal_version):
