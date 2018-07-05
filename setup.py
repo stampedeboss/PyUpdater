@@ -32,8 +32,6 @@ KEYWORDS = ('PyUpdater Pyinstaller Auto Update AutoUpdate Auto-Update Esky '
 with open(u'requirements.txt', u'r') as f:
     required = f.read().splitlines()
 
-required.pop(0)
-required.append('dsdev-utils')
 
 # ToDo: Remove in PyUpdater 3.0
 extra_patch = 'bsdiff4 == 1.1.4'
@@ -65,6 +63,7 @@ setup(
     tests_require=['pytest'],
     cmdclass=versioneer.get_cmdclass(),
     install_requires=required,
+    dependency_links=[],
     packages=find_packages(),
     entry_points="""
     [console_scripts]
